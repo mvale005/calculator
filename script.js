@@ -15,6 +15,7 @@ let quotient = 1;
 let result = "";
 let answer = 0;
 let operator = "";
+let operatorCount = 0;
 
 //#region logic to get numbers onto the calculator display
 
@@ -63,7 +64,7 @@ for (const operatorBtn of operatorBtns) {
 
 function addOperators(e){
 
-    if(operator === e.target.innerText){
+    if(operator === e.target.innerText && operatorCount>0){
    
 
         if((firstOperand === null) && (secondOperand=== null)){
@@ -90,7 +91,9 @@ function addOperators(e){
     } else {
         operator = e.target.innerText;
         firstOperand = Number(calcDisplay.innerText);
+        operatorCount++;
         reset();
+        
     }
 
 }
