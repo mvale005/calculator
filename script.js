@@ -13,6 +13,8 @@ let difference = 0;
 let product = 1;
 let quotient = 1;
 let result = "";
+let answer = 0;
+let operator = "";
 
 //#region logic to get numbers onto the calculator display
 
@@ -49,65 +51,74 @@ function clearScreen(e){
 function reset(){
     numOnDisplayCount = 0;
     calcDisplay.innerText = "";
-    calcDisplayText = "";
-      
+    calcDisplayText = "";    
 }
 
 //#endregion
 
+//#region logic to +, /, * and -
 for (const operatorBtn of operatorBtns) {
     operatorBtn.addEventListener("click",addOperators)
 }
 
 function addOperators(e){
-    let operator = e.target.innerText;
-    console.log(operator);
 
-    if((firstOperand === null) && (secondOperand=== null)){
-        firstOperand = Number(calcDisplay.innerText);
-        console.log(firstOperand);
-        operate(firstOperand,secondOperand,operator);
-        reset();
+    if(operator === e.target.innerText){
+   
+
+        if((firstOperand === null) && (secondOperand=== null)){
+            firstOperand = Number(calcDisplay.innerText);
+            //console.log(firstOperand);
+            answer = operate(firstOperand,secondOperand,operator);
+            reset();
+            calcDisplay.innerText = answer;
+                    
+        } else if ((firstOperand !== null)&& (secondOperand===null)){
+            secondOperand = Number(calcDisplay.innerText);
+            console.log(secondOperand);
+            answer = operate(firstOperand,secondOperand,operator);
+            reset();
+            calcDisplay.innerText = answer;
+        
+        } else if ((firstOperand !== null)&& (secondOperand !==null)){
+            secondOperand = Number(calcDisplay.innerText);
+            answer = operate(firstOperand,secondOperand,operator);
+            reset();
+            calcDisplay.innerText = answer;
             
-    } else if ((firstOperand !== null)&& (secondOperand===null)){
-        secondOperand = Number(calcDisplay.innerText);
-        console.log(secondOperand);
-        operate(firstOperand,secondOperand,operator);
+        }
+    } else {
+        operator = e.target.innerText;
+        firstOperand = Number(calcDisplay.innerText);
         reset();
-    } else if ((firstOperand !== null)&& (secondOperand !==null)){
-        secondOperand = Number(calcDisplay.innerText);
-        operate(firstOperand,secondOperand,operator);
-        reset();
-
     }
-}
 
+}
+//#endregion
+
+//#region logic to perform calculations
 function operate(operandOne, operandTwo, operator){
 
     if(operator === "+"){
-        if(operandTwo == null){
-            sum = operandOne + 0;
-            firstOperand = sum;
-            result = sum;
-        } else {
-            sum = operandOne + operandTwo;
-            firstOperand = sum;
-            result = sum;
-    
-        }
 
+        sum = operandOne + operandTwo;
+        firstOperand = sum;
+        result = Number(sum);
+        console.log(sum);
+        calcDisplay.innerText = sum;
     
-     console.log(sum);
 
     } else if(operator === "-"){
         if(operandTwo == null){
             difference = operandOne - 0;
             firstOperand = difference;
-            result = difference;
+            result = Number(difference);
+           
         } else {
             difference = operandOne - operandTwo;
             firstOperand = difference;
-            result = difference;
+            result = Number(difference);
+            
         }
 
         console.log(difference);
@@ -139,15 +150,17 @@ function operate(operandOne, operandTwo, operator){
     }
 
 
-
+ return result;
 
 
 
 }
+//#endregion
 
-
+//#region Equal Button
 equalBtn.addEventListener("click",equalFunction);
 
 function equalFunction(e){
     calcDisplay.innerText = result;
 }
+//#endregion 
