@@ -15,6 +15,7 @@ let quotient = 1;
 let result = "";
 let answer = 0;
 let operator = "";
+let operatorTwo = "";
 let operatorCount = 0;
 
 //#region logic to get numbers onto the calculator display
@@ -63,36 +64,57 @@ for (const operatorBtn of operatorBtns) {
 }
 
 function addOperators(e){
+    
 
-    if(operator === e.target.innerText && operatorCount>0){
+    if(operatorCount>0){
+
+       
+     operatorTwo = e.target.innerText;
+        
    
 
         if((firstOperand === null) && (secondOperand=== null)){
             firstOperand = Number(calcDisplay.innerText);
-            //console.log(firstOperand);
-            answer = operate(firstOperand,secondOperand,operator);
+            console.log("first operand = " + firstOperand);
+            console.log("second operand = " + secondOperand);
+            console.log("operator = " + operator);
+            console.log("operatorTwo = " + operatorTwo);
+            answer = operate(firstOperand,secondOperand,operatorTwo);
             reset();
             calcDisplay.innerText = answer;
                     
         } else if ((firstOperand !== null)&& (secondOperand===null)){
             secondOperand = Number(calcDisplay.innerText);
-            console.log(secondOperand);
+            console.log("first operand = " + firstOperand);
+            console.log("second operand = " + secondOperand);
+            console.log("operator = " + operator);
+            console.log("operatorTwo = " + operatorTwo);
             answer = operate(firstOperand,secondOperand,operator);
             reset();
             calcDisplay.innerText = answer;
         
         } else if ((firstOperand !== null)&& (secondOperand !==null)){
             secondOperand = Number(calcDisplay.innerText);
-            answer = operate(firstOperand,secondOperand,operator);
+            console.log("first operand = " + firstOperand);
+            console.log("second operand = " + secondOperand);
+            console.log("operator = " + operator);
+            console.log("operatorTwo = " + operatorTwo);
+            answer = operate(firstOperand,secondOperand,operatorTwo);
             reset();
             calcDisplay.innerText = answer;
             
         }
     } else {
-        operator = e.target.innerText;
+        operator= e.target.innerText;
         firstOperand = Number(calcDisplay.innerText);
         operatorCount++;
+        console.log("first operand = " + firstOperand);
+        console.log("second operand = " + secondOperand);
+        console.log("operator = " + operator);
+        console.log("operatorTwo = " + operatorTwo);
+        answer = operate(firstOperand,secondOperand,operator);
         reset();
+        calcDisplay.innerText = answer;
         
     }
 
@@ -107,55 +129,21 @@ function operate(operandOne, operandTwo, operator){
         sum = operandOne + operandTwo;
         firstOperand = sum;
         result = Number(sum);
-        console.log(sum);
-        calcDisplay.innerText = sum;
-    
+        console.log("result = " + result);
+        console.log("");
+        return result;
+     
 
     } else if(operator === "-"){
-        if(operandTwo == null){
-            difference = operandOne - 0;
-            firstOperand = difference;
-            result = Number(difference);
-           
-        } else {
-            difference = operandOne - operandTwo;
-            firstOperand = difference;
-            result = Number(difference);
-            
-        }
-
-        console.log(difference);
-
-    } else if(operator === "*"){
-        if(operandTwo == null){
-            product = operandOne * 1;
-            firstOperand = product;
-            result = product;
-        } else {
-            product = operandOne * operandTwo;
-            firstOperand = product;
-            result = product;
-        }
-
-        console.log(product);
-    } else if(operator === "/"){
-        if(operandTwo == null){
-            quotient = operandOne / 1;
-            firstOperand = quotient;
-            result = quotient;
-        } else {
-            quotient = operandOne / operandTwo;
-            firstOperand = quotient;
-            result = quotient;
-        }
-
-        console.log(quotient);
-    }
-
-
- return result;
-
-
+        
+        difference = operandOne - operandTwo;
+        firstOperand = difference;
+        result = Number(difference);
+        console.log("result = " + result);
+        console.log("");
+        return result;
+        
+  } 
 
 }
 //#endregion
@@ -164,6 +152,6 @@ function operate(operandOne, operandTwo, operator){
 equalBtn.addEventListener("click",equalFunction);
 
 function equalFunction(e){
-    calcDisplay.innerText = result;
+    
 }
 //#endregion 
