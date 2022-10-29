@@ -20,7 +20,7 @@ let operatorCount = 0;
 let opperatorArray = [];
 let i = 0;//for opperatorArray
 let dotCount = 0;
-let equalBtnClickCount = 0;
+let equalBtnClicked = false;
 
 
 //#region adding a decimal points
@@ -66,7 +66,6 @@ function reset(){
     calcDisplay.innerText = "";
     calcDisplayText = ""; 
     dotCount = 0;    
-    //equalBtnjustClicked = false;
 }
 
 //#endregion
@@ -81,15 +80,24 @@ function addOperators(e){
     if(operatorCount>0){ 
  
         if(e.target.innerText !== "="){
+       
             opperatorArray.push(e.target.innerText);
             operator = opperatorArray[i];
             operatorTwo = opperatorArray[i-1];
+            console.log(" IF ");
 
-        }
-        else {operatorTwo = operator;
-          console.log(opperatorArray);
+        } else {
+    
        
+
+         operatorTwo = operator;
+          operator = opperatorArray[i-1];
+          console.log(opperatorArray);
+          console.log("ELSE ");
+          
+      
         }
+
     
         if ((firstOperand !== null)&& (secondOperand===null)){
             secondOperand = Number(calcDisplay.innerText);
@@ -136,7 +144,7 @@ function operate(operandOne, operandTwo, operator){
             sum = operandOne + operandTwo;
             firstOperand = sum;
             result = Number(sum);
-             
+
         return result;  
         } else {
             sum = result + operandTwo;  
