@@ -67,12 +67,9 @@ function addOperators(e){
     
 
     if(operatorCount>0){
-
-       
+      
      operatorTwo = e.target.innerText;
-        
-   
-
+          
         if((firstOperand === null) && (secondOperand=== null)){
             firstOperand = Number(calcDisplay.innerText);
             console.log("first operand = " + firstOperand);
@@ -92,14 +89,16 @@ function addOperators(e){
             answer = operate(firstOperand,secondOperand,operator);
             reset();
             calcDisplay.innerText = answer;
+            operator = operatorTwo;
         
         } else if ((firstOperand !== null)&& (secondOperand !==null)){
-            secondOperand = Number(calcDisplay.innerText);
+            
+            secondOperand= Number(calcDisplay.innerText);
             console.log("first operand = " + firstOperand);
             console.log("second operand = " + secondOperand);
             console.log("operator = " + operator);
             console.log("operatorTwo = " + operatorTwo);
-            answer = operate(firstOperand,secondOperand,operatorTwo);
+            answer = operate(firstOperand,secondOperand,operator);
             reset();
             calcDisplay.innerText = answer;
             
@@ -131,19 +130,26 @@ function operate(operandOne, operandTwo, operator){
         result = Number(sum);
         console.log("result = " + result);
         console.log("");
-        return result;
-     
+        return result;     
 
     } else if(operator === "-"){
         
-        difference = operandOne - operandTwo;
+        difference = result - operandTwo;
         firstOperand = difference;
         result = Number(difference);
         console.log("result = " + result);
         console.log("");
         return result;
         
-  } 
+     } else if(operator === "*"){
+        
+        product = operandOne * operandTwo;
+        firstOperand = product;
+        result = Number(product);
+        console.log("result = " + result);
+        console.log("");
+        return result;
+} 
 
 }
 //#endregion
@@ -152,6 +158,9 @@ function operate(operandOne, operandTwo, operator){
 equalBtn.addEventListener("click",equalFunction);
 
 function equalFunction(e){
+    let someNum = Number(calcDisplay.innerText);
+    answer = operate(result,someNum,operatorTwo)
+    calcDisplay.innerText = answer;
     
 }
 //#endregion 
