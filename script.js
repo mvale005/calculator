@@ -2,7 +2,7 @@ const numBtns = document.querySelectorAll(".put-num-screen");
 const calcDisplay = document.querySelector(".display");
 const allClearBtn = document.querySelector("#clear-btn");
 const operatorBtns = document.querySelectorAll(".put-operator-on");
-const equalBtn = document.querySelector(".equal-btn");
+const dotBtn = document.querySelector(".dotBtn");
 
 let numOnDisplayCount = 0;
 let calcDisplayText = "";
@@ -12,11 +12,26 @@ let sum = 0;
 let difference = 0;
 let product = 1;
 let quotient = 1;
-let result = "";
+let result = null;
 let answer = 0;
 let operator = "";
 let operatorTwo = "";
 let operatorCount = 0;
+let opperatorArray = [];
+let i = 0;//for opperatorArray
+let dotCount = 0;
+let equalBtnClickCount = 0;
+
+
+//#region adding a decimal points
+dotBtn.addEventListener("click",addDot);
+function addDot(e){
+ if(dotCount<1)   
+  calcDisplayText+=e.target.innerText;
+  calcDisplay.innerText = calcDisplayText;
+  dotCount++;
+}
+//#endregion
 
 //#region logic to get numbers onto the calculator display
 
@@ -31,7 +46,7 @@ function addNumToDisplay(e){
 
     if(calcDisplayText.startsWith("0")){
         calcDisplayText ="";
-        numOnDisplayCount = 0
+        numOnDisplayCount = 0;
     }
 
     if (numOnDisplayCount <10)
@@ -39,21 +54,19 @@ function addNumToDisplay(e){
 }
 //#endregion
 
-//#region AC button logic
+//#region AC button logic and a reset function
 allClearBtn.addEventListener("click",clearScreen);
 
 function clearScreen(e){
-
-    firstOperand = null;
-    secondOperand = null;
-    console.clear();
-    reset();
+ location.reload(); 
 }
 
 function reset(){
     numOnDisplayCount = 0;
     calcDisplay.innerText = "";
-    calcDisplayText = "";    
+    calcDisplayText = ""; 
+    dotCount = 0;    
+    //equalBtnjustClicked = false;
 }
 
 //#endregion
@@ -64,59 +77,54 @@ for (const operatorBtn of operatorBtns) {
 }
 
 function addOperators(e){
-    
 
-    if(operatorCount>0){
-      
-     operatorTwo = e.target.innerText;
-          
-        if((firstOperand === null) && (secondOperand=== null)){
-            firstOperand = Number(calcDisplay.innerText);
-            console.log("first operand = " + firstOperand);
-            console.log("second operand = " + secondOperand);
-            console.log("operator = " + operator);
-            console.log("operatorTwo = " + operatorTwo);
-            answer = operate(firstOperand,secondOperand,operatorTwo);
-            reset();
-            calcDisplay.innerText = answer;
-                    
-        } else if ((firstOperand !== null)&& (secondOperand===null)){
+    if(operatorCount>0){ 
+ 
+        if(e.target.innerText !== "="){
+            opperatorArray.push(e.target.innerText);
+            operator = opperatorArray[i];
+            operatorTwo = opperatorArray[i-1];
+
+        }
+        else {operatorTwo = operator;
+          console.log(opperatorArray);
+       
+        }
+    
+        if ((firstOperand !== null)&& (secondOperand===null)){
             secondOperand = Number(calcDisplay.innerText);
-            console.log("first operand = " + firstOperand);
-            console.log("second operand = " + secondOperand);
-            console.log("operator = " + operator);
-            console.log("operatorTwo = " + operatorTwo);
-            answer = operate(firstOperand,secondOperand,operator);
+ 
+            if(operator !== operatorTwo)
+                answer = operate(firstOperand,secondOperand,operatorTwo);
+            else answer = operate(firstOperand,secondOperand,operator);
+          
             reset();
-            calcDisplay.innerText = answer;
+            calcDisplay.innerText = answer;     
             operator = operatorTwo;
+            i++;
         
         } else if ((firstOperand !== null)&& (secondOperand !==null)){
             
             secondOperand= Number(calcDisplay.innerText);
-            console.log("first operand = " + firstOperand);
-            console.log("second operand = " + secondOperand);
-            console.log("operator = " + operator);
-            console.log("operatorTwo = " + operatorTwo);
-            answer = operate(firstOperand,secondOperand,operator);
+
+            if(operator !== operatorTwo)
+                answer = operate(firstOperand,secondOperand,operatorTwo);
+            else answer = operate(firstOperand,secondOperand,operator);
+
             reset();
             calcDisplay.innerText = answer;
-            
+            i++;           
         }
-    } else {
-        operator= e.target.innerText;
-        firstOperand = Number(calcDisplay.innerText);
-        operatorCount++;
-        console.log("first operand = " + firstOperand);
-        console.log("second operand = " + secondOperand);
-        console.log("operator = " + operator);
-        console.log("operatorTwo = " + operatorTwo);
-        answer = operate(firstOperand,secondOperand,operator);
-        reset();
-        calcDisplay.innerText = answer;
-        
-    }
+    } else {      
+        opperatorArray.push(e.target.innerText);
+        operator = opperatorArray[i];
 
+         firstOperand = Number(calcDisplay.innerText);
+        operatorCount++;
+        answer = operate(firstOperand,secondOperand,operator)
+        reset();
+        i++;       
+    }
 }
 //#endregion
 
@@ -124,43 +132,55 @@ function addOperators(e){
 function operate(operandOne, operandTwo, operator){
 
     if(operator === "+"){
-
-        sum = operandOne + operandTwo;
-        firstOperand = sum;
-        result = Number(sum);
-        console.log("result = " + result);
-        console.log("");
-        return result;     
-
+        if(operator === operatorTwo){
+            sum = operandOne + operandTwo;
+            firstOperand = sum;
+            result = Number(sum);
+             
+        return result;  
+        } else {
+            sum = result + operandTwo;  
+            return result;
+        }
+      
     } else if(operator === "-"){
-        
-        difference = result - operandTwo;
-        firstOperand = difference;
-        result = Number(difference);
-        console.log("result = " + result);
-        console.log("");
+        if(operator === operatorTwo){
+            difference = operandOne - operandTwo;
+            firstOperand = difference;
+            result = Number(difference);
         return result;
+        } else {
+            difference = result - operandTwo
+            return result;
+        }      
         
      } else if(operator === "*"){
-        
-        product = operandOne * operandTwo;
-        firstOperand = product;
-        result = Number(product);
-        console.log("result = " + result);
-        console.log("");
+        if(operator === operatorTwo){
+            product = operandOne * operandTwo;
+            firstOperand = product;
+            result = Number(product);
         return result;
-} 
+        } else {
+            product = result * operandTwo
+            return result;
+        }
+        
+     } else if(operator === "/"){
 
+        if(operandTwo == 0)
+        return "CAN'T";
+  
+        if(operator === operatorTwo){
+            quotient = operandOne / operandTwo;
+            firstOperand = quotient;
+            result = Number(quotient);
+
+        return result;
+        } else {
+            quotient = result / operandTwo
+            return result;
+        }        
+     }  
 }
 //#endregion
 
-//#region Equal Button
-equalBtn.addEventListener("click",equalFunction);
-
-function equalFunction(e){
-    let someNum = Number(calcDisplay.innerText);
-    answer = operate(result,someNum,operatorTwo)
-    calcDisplay.innerText = answer;
-    
-}
-//#endregion 
