@@ -20,8 +20,6 @@ let operatorCount = 0;
 let opperatorArray = [];
 let i = 0;//for opperatorArray
 let dotCount = 0;
-let equalBtnClicked = false;
-
 
 //#region adding a decimal points
 dotBtn.addEventListener("click",addDot);
@@ -34,7 +32,6 @@ function addDot(e){
 //#endregion
 
 //#region logic to get numbers onto the calculator display
-
 for (const numBtn of numBtns) {
     numBtn.addEventListener("click", addNumToDisplay);
 }
@@ -79,26 +76,10 @@ function addOperators(e){
 
     if(operatorCount>0){ 
  
-        if(e.target.innerText !== "="){
-       
             opperatorArray.push(e.target.innerText);
             operator = opperatorArray[i];
             operatorTwo = opperatorArray[i-1];
-            console.log(" IF ");
-
-        } else {
-    
-       
-
-         operatorTwo = operator;
-          operator = opperatorArray[i-1];
-          console.log(opperatorArray);
-          console.log("ELSE ");
-          
-      
-        }
-
-    
+           
         if ((firstOperand !== null)&& (secondOperand===null)){
             secondOperand = Number(calcDisplay.innerText);
  
@@ -107,7 +88,10 @@ function addOperators(e){
             else answer = operate(firstOperand,secondOperand,operator);
           
             reset();
-            calcDisplay.innerText = answer;     
+            let answerText = answer.toString();
+            
+            calcDisplay.innerText = answerText.slice(0,14);  
+            console.log(answerText);
             operator = operatorTwo;
             i++;
         
@@ -120,7 +104,10 @@ function addOperators(e){
             else answer = operate(firstOperand,secondOperand,operator);
 
             reset();
-            calcDisplay.innerText = answer;
+            let answerText = answer.toString();
+            answerText.slice(0,9);
+            console.log(answerText);
+            calcDisplay.innerText = answerText.slice(0,14);  
             i++;           
         }
     } else {      
@@ -186,9 +173,23 @@ function operate(operandOne, operandTwo, operator){
         return result;
         } else {
             quotient = result / operandTwo
-            return result;
+            return quotient;
         }        
      }  
+        else if(operator === "="){
+
+            if(operandTwo == 0)
+            return "CAN'T";
+    
+            if(operator === operatorTwo){
+                result = result;
+
+            return result;
+            } else {
+                result = result;
+                return result;
+            }        
+        }  
 }
 //#endregion
 
