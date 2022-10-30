@@ -3,6 +3,8 @@ const calcDisplay = document.querySelector(".display");
 const allClearBtn = document.querySelector("#clear-btn");
 const operatorBtns = document.querySelectorAll(".put-operator-on");
 const dotBtn = document.querySelector(".dotBtn");
+const backSpaceBtn = document.querySelector("#backspace");
+const negPosBtn = document.querySelector(".neg-pos");
 
 let numOnDisplayCount = 0;
 let calcDisplayText = "";
@@ -20,6 +22,29 @@ let operatorCount = 0;
 let opperatorArray = [];
 let i = 0;//for opperatorArray
 let dotCount = 0;
+
+//#region inverse button
+
+negPosBtn.addEventListener("click",inverseNumber);
+
+function inverseNumber(e){
+    let inverseNum = Number(calcDisplay.innerText) * -1;
+    calcDisplay.innerText = inverseNum;
+}
+
+
+//#endregion
+//#region backspace
+backSpaceBtn.addEventListener("click",backSpace);
+function backSpace(e){
+    let backSpacedString = calcDisplay.innerText;
+    let newString = backSpacedString.slice(0,backSpacedString.length-1);
+    calcDisplayText="";
+    calcDisplay.innerText = newString;
+    console.log(newString);
+    numOnDisplayCount--;
+}
+//#endregion
 
 //#region adding a decimal points
 dotBtn.addEventListener("click",addDot);
@@ -88,9 +113,10 @@ function addOperators(e){
             else answer = operate(firstOperand,secondOperand,operator);
           
             reset();
+            answer = Math.round(answer * 1000) /1000;
             let answerText = answer.toString();
             
-            calcDisplay.innerText = answerText.slice(0,14);  
+            calcDisplay.innerText = answerText.slice(0,16);  
             console.log(answerText);
             operator = operatorTwo;
             i++;
@@ -104,10 +130,11 @@ function addOperators(e){
             else answer = operate(firstOperand,secondOperand,operator);
 
             reset();
+            answer = Math.round(answer * 1000) /1000;
             let answerText = answer.toString();
-            answerText.slice(0,9);
+            //answerText.slice(0,9);
             console.log(answerText);
-            calcDisplay.innerText = answerText.slice(0,14);  
+            calcDisplay.innerText = answerText.slice(0,16);  
             i++;           
         }
     } else {      
